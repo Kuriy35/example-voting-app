@@ -22,7 +22,7 @@ namespace Worker
                 var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
                 var redisServer = Environment.GetEnvironmentVariable("REDIS_HOST");
 
-                string pgsqlConnectionString = $"Host={dbServer};Database={dbName};Username={username};Password={password};";
+                string pgsqlConnectionString = $"Host={dbServer};Database={dbName};Username={username};Password={password};SSL Mode=Require;Trust Server Certificate=true;";
                 var pgsql = OpenDbConnection(pgsqlConnectionString);
                 var redisConn = OpenRedisConnection(redisServer);
                 var redis = redisConn.GetDatabase();
