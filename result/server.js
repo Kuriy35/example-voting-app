@@ -1,5 +1,6 @@
 var express = require('express'),
     async = require('async'),
+    path = require('path'),
     { Pool } = require('pg'),
     cookieParser = require('cookie-parser'),
     app = express(),
@@ -17,8 +18,10 @@ io.on('connection', function (socket) {
   });
 });
 
+var connectionString = `postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`
+
 var pool = new Pool({
-  connectionString: 'postgres://postgres:postgres@db/postgres'
+  connectionString: connectionString
 });
 
 async.retry(
@@ -64,7 +67,7 @@ function collectVotesFromResult(result) {
 }
 
 app.use(cookieParser());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/views'));
 
 app.get('/', function (req, res) {
